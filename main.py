@@ -157,7 +157,13 @@ if __name__ == '__main__':
     """
     tweets = [tweet.full_text for tweet in search_results]
     df = pd.DataFrame({'tweets': tweets})
+    result = df.to_json(orient="records")
+    parsed = json.loads(result)
+    print(json.dumps(parsed, indent=4, sort_keys=True))
+    """
     print(df.to_string())
+
     with open('tweets.json', 'w', encoding='utf8') as file:
         for tweet in search_results:
-            json.dump(tweet, file, indent=1)
+            json.dumps(tweet, file, indent=1)
+    """
