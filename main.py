@@ -118,14 +118,18 @@ def twitter_search(twitter_api, q, max_results=200, **kw):
 
     return statuses
 
+def clean_tweet(self, tweet):
+    return ' '.join(re.sub("(@[A-Za-z0-9]+) | ([^0-9A-Za-z \t]) | (\w+:\/\/\S+)", " ", tweet).split())
+
 import pandas as pd
 from IPython.display import display
 import tweepy
+from twitterscraper import query_tweets
+import datetime as dt
 
 
 if __name__ == '__main__':
-    q = '"COVID-19 vaccine" OR CDC OR FDA OR Pfizer OR Moderna OR Janssen'
-    number_of_tweets = 200
+    q = '"COVID-19 vaccine" OR CDC OR FDA OR Pfizer OR Moderna OR Janssen' + "-filter:retweets"
     tweets = []
 
     CONSUMER_KEY = ''
@@ -138,11 +142,17 @@ if __name__ == '__main__':
 
     api = tweepy.API(auth)
 
-    search_results = tweepy.Cursor(api.search, q=q, tweet_mode="extended", lang="en", fromDate="2021-01-01").items(500)
-
-
-
-    """""
+    search_results = tweepy.Cursor(api.search, q=q, tweet_mode="extended", lang="en", fromDate="2021-01-01").items(100)
+    """
+    begin_date = dt.date(2021,1,1)
+    end_date = dt.date(2021,5,1)
+    tweets = query_tweets("Covid-19", begindate = begin_date, enddate = end_date, limit = 100, lang = "en")
+    df = pd.DataFrame(t. __dict__ for t in tweets)
+    result = df.to_json(orient="records")
+    parsed = json.loads(result)
+    print(json.dumps(parsed, indent=4, sort_keys=True))
+    """
+    """
     twitter_api = oauth_login()
 
     # twitter_stream = twitter.TwitterStream(auth=twitter_api.auth)
@@ -155,15 +165,9 @@ if __name__ == '__main__':
                                     since='2021-01-01')
 
     """
-    tweets = [tweet.full_text for tweet in search_results]
-    df = pd.DataFrame({'tweets': tweets})
+
+    tweets = [[tweet.id, tweet.user.screen_name, tweet.user.id, tweet.favorite_count, tweet.retweet_count, tweet.created_at, tweet.full_text] for tweet in search_results]
+    df = pd.DataFrame(data=tweets, columns=['tweet id', 'username', 'user id', 'favorite count', 'retweet count', 'created time', 'full text'])
     result = df.to_json(orient="records")
     parsed = json.loads(result)
     print(json.dumps(parsed, indent=4, sort_keys=True))
-    """
-    print(df.to_string())
-
-    with open('tweets.json', 'w', encoding='utf8') as file:
-        for tweet in search_results:
-            json.dumps(tweet, file, indent=1)
-    """
