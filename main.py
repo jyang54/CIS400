@@ -1,3 +1,5 @@
+import datetime
+
 import twitter
 
 
@@ -121,10 +123,14 @@ def twitter_search(twitter_api, q, max_results=200, **kw):
 def clean_tweet(self, tweet):
     return ' '.join(re.sub("(@[A-Za-z0-9]+) | ([^0-9A-Za-z \t]) | (\w+:\/\/\S+)", " ", tweet).split())
 
+def datetime_from_utc_to_local(utc_datetime):
+    now_timestamp = time.time()
+    offset = datetime.datetime.fromtimestamp(now_timestamp) - datetime.datetime.utcfromtimestamp(now_timestamp)
+    return utc_datetime + offset
+
 import pandas as pd
 from IPython.display import display
 import tweepy
-from twitterscraper import query_tweets
 import datetime as dt
 
 
@@ -166,7 +172,7 @@ if __name__ == '__main__':
 
     """
 
-    tweets = [[tweet.id, tweet.user.screen_name, tweet.user.id, tweet.favorite_count, tweet.retweet_count, tweet.created_at, tweet.full_text] for tweet in search_results]
+    tweets = [[tweet.id, tweet.user.screen_name, tweet.user.id, tweet.favorite_count, tweet.retweet_count, str(datetime_from_utc_to_local(tweet.created_at)), tweet.full_text] for tweet in search_results]
     df = pd.DataFrame(data=tweets, columns=['tweet id', 'username', 'user id', 'favorite count', 'retweet count', 'created time', 'full text'])
     result = df.to_json(orient="records")
     parsed = json.loads(result)
