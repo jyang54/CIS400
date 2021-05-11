@@ -149,31 +149,9 @@ if __name__ == '__main__':
     api = tweepy.API(auth)
 
     search_results = tweepy.Cursor(api.search, q=q, tweet_mode="extended", lang="en", fromDate="2021-01-01").items(100)
-    """
-    begin_date = dt.date(2021,1,1)
-    end_date = dt.date(2021,5,1)
-    tweets = query_tweets("Covid-19", begindate = begin_date, enddate = end_date, limit = 100, lang = "en")
-    df = pd.DataFrame(t. __dict__ for t in tweets)
-    result = df.to_json(orient="records")
-    parsed = json.loads(result)
-    print(json.dumps(parsed, indent=4, sort_keys=True))
-    """
-    """
-    twitter_api = oauth_login()
-
-    # twitter_stream = twitter.TwitterStream(auth=twitter_api.auth)
-
-    # stream = make_twitter_request(twitter_stream.statuses.filter, track=q, language="en")
-    search_results = twitter_search(twitter_api=twitter_api,
-                                    q=q,
-                                    max_results=number_of_tweets,
-                                    lang="en",
-                                    since='2021-01-01')
-
-    """
-
     tweets = [[tweet.id, tweet.user.screen_name, tweet.user.id, tweet.favorite_count, tweet.retweet_count, str(datetime_from_utc_to_local(tweet.created_at)), tweet.full_text] for tweet in search_results]
     df = pd.DataFrame(data=tweets, columns=['tweet id', 'username', 'user id', 'favorite count', 'retweet count', 'created time', 'full text'])
+    #Print result
     result = df.to_json(orient="records")
     parsed = json.loads(result)
     print(json.dumps(parsed, indent=4, sort_keys=True))
