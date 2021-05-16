@@ -173,22 +173,43 @@ if __name__ == '__main__':
     q = '"COVID-19 vaccine" OR Pfizer OR Moderna OR J&J vaccine OR Janssen' + "-filter:retweets"
     tweets = []
 
-    CONSUMER_KEY = 'lqJRuPjOgQqzDkjoit18gk0wf'
-    CONSUMER_SECRET = 'hk9GogPPf4ujwA0tkWHxbypXleH3vB6wP9DooQ2Smi1c0WXjSr'
-    OAUTH_TOKEN = '1373343577812705281-OZujR7COGlSLsOUjbG80XxKd0Vo5rI'
-    OAUTH_TOKEN_SECRET = 'OgqWCdB8sqA92aX1GRuVZFy9GKsQWMkAS3meZMAupPxq9'
+    CONSUMER_KEY = ''
+    CONSUMER_SECRET = ''
+    OAUTH_TOKEN = ''
+    OAUTH_TOKEN_SECRET = ''
 
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     auth.set_access_token(OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
 
     api = tweepy.API(auth,wait_on_rate_limit=True,wait_on_rate_limit_notify=True)
 
-    search_results = tweepy.Cursor(api.search, q=q, tweet_mode="extended", lang="en", until = '2021-04-29').items(10000)
+    search_results = tweepy.Cursor(api.search, 
+                                   q=q, 
+                                   tweet_mode="extended", 
+                                   lang="en", 
+                                   until = '2021-04-29').items(10000)
 
     
-    tweets = [[tweet.id, tweet.user.screen_name, tweet.user.id, tweet.favorite_count, tweet.retweet_count, str(datetime_from_utc_to_local(tweet.created_at)), clean_tweet(tweet.full_text), getPolarity(clean_tweet(tweet.full_text)), getAnalysis(getPolarity(clean_tweet(tweet.full_text)))] for tweet in search_results]
+    tweets = [[tweet.id, 
+               tweet.user.screen_name, 
+               tweet.user.id, 
+               tweet.favorite_count, 
+               tweet.retweet_count, 
+               str(datetime_from_utc_to_local(tweet.created_at)), 
+               clean_tweet(tweet.full_text), getPolarity(clean_tweet(tweet.full_text)), 
+               getAnalysis(getPolarity(clean_tweet(tweet.full_text)))] 
+              for tweet in search_results]
    # print(tweets)
-    df = pd.DataFrame(data=tweets, columns=['tweet_id', 'username', 'user_id', 'favorite_count', 'retweet_count', 'created_time', 'full_text', 'polarity', 'analysis'])
+    df = pd.DataFrame(data=tweets, 
+                      columns=['tweet_id', 
+                               'username', 
+                               'user_id', 
+                               'favorite_count', 
+                               'retweet_count', 
+                               'created_time', 
+                               'full_text', 
+                               'polarity', 
+                               'analysis'])
     result = df.to_json(orient="records")
     parsed = json.loads(result)
     print(json.dumps(parsed, indent=4, sort_keys=True))
