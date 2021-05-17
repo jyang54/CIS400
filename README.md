@@ -24,7 +24,7 @@ Once the account is created, you can find the keys and token when you creat an a
 Put the keys you got in data_collection.py to use Twitter APIs.
 
 1. First you need to collect data using data_collection.py, you need to install the packages below
-import pandas as pd
+\nimport pandas as pd
 import tweepy
 import datetime
 import twitter
