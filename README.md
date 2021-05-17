@@ -23,7 +23,7 @@ Twitter data collection requires a twitter developer account which can be create
 Once the account is created, you can find the keys and token when you creat an app.
 Put the keys you got in data_collection.py to use Twitter APIs.
 
-1. First you need to collect data using data_collection.py, you need to install the packages below
+1. First you need to collect data using data_collection.py, you need to install the packages below<br/>
 import pandas as pd<br/>
 import tweepy<br/>
 import datetime<br/>
@@ -36,12 +36,12 @@ from http.client import BadStatusLine<br/>
 import json<br/>
 import re
 
-2. Then you need to convert json files into csv files using jsonTocsv.py, install the packages below
+2. Then you need to convert json files into csv files using jsonTocsv.py, install the packages below<br/>
 import json<br/>
 import csv<br/>
 from collections import Counter
 
-3. You can use analysis.ipynb to make charts, install the packages below
+3. You can use analysis.ipynb to make charts, install the packages below<br/>
 import os<br/>
 import pandas as pd<br/>
 import numpy as np<br/>
@@ -56,7 +56,7 @@ from nltk.corpus import stopwords<br/>
 from nltk.tokenize import word_tokenize<br/>
 from collections import Counter
 
-4. Lastly, you can do baseline evaluation with baseline.ipynb, install the packages below
+4. Lastly, you can do baseline evaluation with baseline.ipynb, install the packages below<br/>
 import pandas as pd<br/>
 import numpy as np<br/>
 import matplotlib<br/>
