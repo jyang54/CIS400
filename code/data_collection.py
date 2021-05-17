@@ -159,7 +159,7 @@ def getAnalysis(num):
     else:
         return 'neutral'
 
-
+# Convert UTC time to local time
 def datetime_from_utc_to_local(utc_datetime):
     now_timestamp = time.time()
     offset = datetime.datetime.fromtimestamp(now_timestamp) - datetime.datetime.utcfromtimestamp(now_timestamp)
@@ -170,26 +170,32 @@ import tweepy
 
 
 if __name__ == '__main__':
-    q = '"COVID-19 vaccine" OR Pfizer OR Moderna OR J&J vaccine OR Janssen' + "-filter:retweets"
+    q = '"COVID-19 vaccine" OR Pfizer OR Moderna OR J&J vaccine OR Janssen' + "-filter:retweets"    # keywords
     tweets = []
 
+    # Key and token
     CONSUMER_KEY = ''
     CONSUMER_SECRET = ''
     OAUTH_TOKEN = ''
     OAUTH_TOKEN_SECRET = ''
 
+    # Log in
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     auth.set_access_token(OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
 
+    # Set API with wait_on_rate_limit to be true. It will automatically wait for rate limits to replenish.
     api = tweepy.API(auth,wait_on_rate_limit=True,wait_on_rate_limit_notify=True)
 
+    # Search tweets using the keywords until 2021-04-29.
+    # We set language to be English.
+    # We use extended tweet mode to get untruncated text.
     search_results = tweepy.Cursor(api.search, 
                                    q=q, 
                                    tweet_mode="extended", 
                                    lang="en", 
                                    until = '2021-04-29').items(10000)
 
-    
+    # We choose the attributes we want to use and save for later.
     tweets = [[tweet.id, 
                tweet.user.screen_name, 
                tweet.user.id, 
@@ -200,6 +206,8 @@ if __name__ == '__main__':
                getAnalysis(getPolarity(clean_tweet(tweet.full_text)))] 
               for tweet in search_results]
    # print(tweets)
+
+    # Make a data frame
     df = pd.DataFrame(data=tweets, 
                       columns=['tweet_id', 
                                'username', 
@@ -210,6 +218,8 @@ if __name__ == '__main__':
                                'full_text', 
                                'polarity', 
                                'analysis'])
+
+    # Save and print Json
     result = df.to_json(orient="records")
     parsed = json.loads(result)
     print(json.dumps(parsed, indent=4, sort_keys=True))
