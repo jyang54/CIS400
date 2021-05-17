@@ -7,7 +7,7 @@ Hang Zhao
 Jintao Yang
 Sioiok Wong
 
-##Overview
+## Overview
 
 The repository contains three folders - code, data and figure.
 In code folder, there are data_collection.py for collecting tweets, jsonTocsv.py to convert json file to csv format, analysis.ipynb for analysing data and making charts, baseline.ipynb for baseline evaluation.
@@ -16,7 +16,7 @@ In data folder, all the data are saved in json and csv format.
 
 In figure folder, all the charts and pictures are saved in png format.
 
-##Installation
+## Installation
 
 First download Python from https://www.python.org/downloads/.
 Twitter data collection requires a twitter developer account which can be created on http://developer.twitter.com/.
