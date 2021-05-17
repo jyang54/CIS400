@@ -16,6 +16,8 @@ In data folder, all the data are saved in json and csv format.
 
 In figure folder, all the charts and pictures are saved in png format.
 
+We note that please run our codes after putting all the codes from code folder and datasets from data folder together in one folder.
+
 ## Installation
 
 First download Python from https://www.python.org/downloads/.
